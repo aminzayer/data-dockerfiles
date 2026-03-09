@@ -1,0 +1,3 @@
+## 2024-03-09 - OOM Avoidance in MapReduce Reducers
+**Learning:** Found an O(N) memory and O(N log N) time anti-pattern in Hadoop MapReduce Python scripts. Reducers aggregating large keys were materializing entire iterators into lists and fully sorting them (`sorted(list(values))[:3]`) just to find the top 3 items.
+**Action:** Always use `heapq.nlargest(N, iterator)` or `heapq.nsmallest` in reducer steps instead of `sorted(list(...))`. This processes the iterator incrementally, maintaining O(K) memory (where K is the number of top items needed) and O(N log K) time complexity, preventing OOM crashes on massive datasets.
