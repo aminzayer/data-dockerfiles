@@ -4,6 +4,7 @@
 # Top 3 visited page in year 2014
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+import heapq
 
 class MRmyjob(MRJob):
 	def mapper(self, _, line):
@@ -27,8 +28,8 @@ class MRmyjob(MRJob):
 	
 	def reducer2(self, _, list_of_values):
 		N = 3
-		list_of_values = sorted(list(list_of_values), reverse=True)
-		return list_of_values[:N]
+		# Performance optimization: use heapq.nlargest instead of full list sorting
+		return heapq.nlargest(N, list_of_values)
 	
 	def steps(self):
 		return [
