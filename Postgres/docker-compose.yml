@@ -3,22 +3,23 @@ services:
   postgres:
     container_name: ${CONTAINER_NAME:-postgres}
     hostname: ${CONTAINER_NAME:-postgres}
-    image: postgres:${PG_VERSION:-14-alpine}
+    image: postgres:${PG_VERSION:-16-alpine}
     volumes:
       - ./${DATA_FOLDER:-db_data}:/var/lib/postgresql/data
       # - ./dump:/data
     environment:
       - POSTGRES_PASSWORD=${DB_PASS:-postgres123}
       - POSTGRES_USER=${DB_USER:-postgres}
-      - POSTGRES_DB=${DB_NAME:-testdb}
+      - POSTGRES_DB=${DB_NAME:-dblab}
+      - POSTGRES_HOST_AUTH_METHOD=trust
     networks:
       - services
     ports:
       - ${PORT:-5432}:5432
 
     restart: always
-volumes:
-  metadata_data: {}
+# volumes:
+#   metadata_data: {}
 
   # pgadmin:
   #   container_name: pgadmin4
